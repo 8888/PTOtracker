@@ -14,7 +14,7 @@ function TimeOff (hours, date) {
 function submitLeave () {
     // Adds a user inputed date
     var hours = parseFloat(document.getElementById("inputHours").value);
-    var date = document.getElementById("inputDate").value
+    var date = new Date(document.getElementById("inputDate").value);
     var i = leaveUsed.length;
     leaveUsed[i] = new TimeOff(hours, date);
 };
@@ -32,6 +32,7 @@ function addTestData () {
     leaveUsed[3] = new TimeOff(7, new Date(2014, 02, 20));
     leaveUsed[4] = new TimeOff(1.5, new Date(2015, 07, 08));
     leaveUsed[5] = new TimeOff(7, new Date(2016, 03, 28));
+    leaveUsed[6] = new TimeOff(7, new Date(2015, 11, 05));
     console.log(leaveUsed)
 }
 
@@ -48,54 +49,70 @@ function calculateTotals () {
     totalDays = totalHours / hoursInFullDay;
 };
 
-function orderList (){
+function orderList () {
     //Orders an array of dates from earliest date to most recent
-    var copyArray = leaveUsed.slice();
-    var orderedArray = []
-    var earliestYear = findEarliestYear(copyArray);
-    var earliestMonth = findEarliestMonth(copyArray, earliestYear);
-    var earliestDay = findEarliestDay(copyArray, earliestYear, earliestMonth);
-    console.log(earliestYear, earliestMonth, earliestDay)
-};
-
-function findEarliestYear (dates) {
-    //Finds the earliest year out of an array of dates
     //Years in javascript are yyyy
-    var earliestYear = 9999
-    for (i=0; i < dates.length; i++) {
-        if (dates[i].date.getFullYear() < earliestYear) {
-            earliestYear = dates[i].date.getFullYear();
-        };
-    };
-    return earliestYear;
-};
+    //Months in javascript are 0-11
+    //Days in javascript are 1-31
+    var dates = leaveUsed.slice(); //Creates a copy of the array
+    var orderedArray = []
+    var currentWorkingYear = []
+    var currentWorkingMonth = []
 
-function findEarliestMonth (dates, earliestYear) {
-    //Finds the earliest month out of a subsection of the earliest year of an array of dates
-    //Months in javascript are from 0-11
-    var earliestMonth = 11
-    for (i=0; i < dates.length; i++) {
-        if (dates[i].date.getFullYear() === earliestYear) {
-            if (dates[i].date.getMonth() < earliestMonth) {
-                earliestMonth = dates[i].date.getMonth();
+    //Year
+    while (dates.length > 0) {
+        var earliestYear = 9999
+        //Finds the earliest year
+        for (i=0; i < dates.length; i++) {
+            if (dates[i].date.getFullYear() < earliestYear) {
+                earliestYear = dates[i].date.getFullYear();
             };
         };
-    };
-    return earliestMonth;
-};
+        //Removes all dates with the earliest year
+        for (i=0; i < dates.length; i++) {
+            if (dates[i].date.getFullYear() === earliestYear) {
+                currentWorkingYear.push(dates.splice(i, 1)[0]); // Removes the object from the array and adds it to the new array. splice(index to start at, number of items to remove) splice returns an array of the items, hence the final 0 index.
+                i -= 1;
+            };
+        };
 
-function findEarliestDay (dates, earliestYear, earliestMonth) {
-    //Finds the earliest day out of a subsection of the earliest year and month of an array of dates
-    //Days in javascript are from 1-31
-    var earliestDay = 31
-    for (i=0; i < dates.length; i++) {
-        if (dates[i].date.getFullYear() === earliestYear) {
-            if (dates[i].date.getMonth() === earliestMonth) {
-                if (dates[i].date.getDate() < earliestDay) {
-                    earliestDay = dates[i].date.getDate();
+        //Month
+        while (currentWorkingYear.length > 0) {
+            var earliestMonth = 12
+            //Finds the earliest month
+            for (i=0; i < currentWorkingYear.length; i++) {
+                if (currentWorkingYear[i].date.getMonth() < earliestMonth) {
+                    earliestMonth = currentWorkingYear[i].date.getMonth();
+                };
+            };
+            //Removes all dates with the earliest month
+            for (i=0; i < currentWorkingYear.length; i++) {
+                if (currentWorkingYear[i].date.getMonth() === earliestMonth) {
+                    currentWorkingMonth.push(currentWorkingYear.splice(i, 1)[0]);
+                    i -= 1;
+                };
+            };
+
+            //Day
+            while (currentWorkingMonth.length > 0) {
+                var earliestDay = 31
+                // Finds the earliest day
+                for (i=0; i < currentWorkingMonth.length; i++) {
+                    if (currentWorkingMonth[i].date.getDate() < earliestDay) {
+                        earliestDay = currentWorkingMonth[i].date.getDate();
+                    };
+                };
+                // Removes all dates with the earliest day
+                for (i=0; i < currentWorkingMonth.length; i++) {
+                    if (currentWorkingMonth[i].date.getDate() === earliestDay) {
+                        orderedArray.push(currentWorkingMonth.splice(i, 1)[0]);
+                        i -= 1;
+                    };
                 };
             };
         };
     };
-    return earliestDay;
+    console.log(leaveUsed)
+    leaveUsed = orderedArray;
+    console.log(leaveUsed)
 };
