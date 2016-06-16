@@ -20,9 +20,9 @@ function submitLeave () {
 };
 
 function updateLeave () {
-    var currentDate = new Date();
+    var currentDate = new Date(); // Update today's date
+    sortDates();
     calculateTotals();
-    orderList();
 };
 
 function addTestData () {
@@ -33,7 +33,6 @@ function addTestData () {
     leaveUsed[4] = new TimeOff(1.5, new Date(2015, 07, 08));
     leaveUsed[5] = new TimeOff(7, new Date(2016, 03, 28));
     leaveUsed[6] = new TimeOff(7, new Date(2015, 11, 05));
-    console.log(leaveUsed)
 }
 
 function calculateTotals () {
@@ -49,70 +48,15 @@ function calculateTotals () {
     totalDays = totalHours / hoursInFullDay;
 };
 
-function orderList () {
-    //Orders an array of dates from earliest date to most recent
-    //Years in javascript are yyyy
-    //Months in javascript are 0-11
-    //Days in javascript are 1-31
-    var dates = leaveUsed.slice(); //Creates a copy of the array
-    var orderedArray = []
-    var currentWorkingYear = []
-    var currentWorkingMonth = []
-
-    //Year
-    while (dates.length > 0) {
-        var earliestYear = 9999
-        //Finds the earliest year
-        for (i=0; i < dates.length; i++) {
-            if (dates[i].date.getFullYear() < earliestYear) {
-                earliestYear = dates[i].date.getFullYear();
-            };
+function sortDates () {
+    // Sorts Date objects from oldest to most recent
+    leaveUsed.sort(function(a,b){
+        if (a.date.getFullYear() != b.date.getFullYear()) {
+            return a.date.getFullYear() - b.date.getFullYear();
+        } else if (a.date.getMonth() != b.date.getMonth()) {
+            return a.date.getMonth() - b.date.getMonth();
+        } else {
+            return a.date.getDate() - b.date.getDate();
         };
-        //Removes all dates with the earliest year
-        for (i=0; i < dates.length; i++) {
-            if (dates[i].date.getFullYear() === earliestYear) {
-                currentWorkingYear.push(dates.splice(i, 1)[0]); // Removes the object from the array and adds it to the new array. splice(index to start at, number of items to remove) splice returns an array of the items, hence the final 0 index.
-                i -= 1;
-            };
-        };
-
-        //Month
-        while (currentWorkingYear.length > 0) {
-            var earliestMonth = 12
-            //Finds the earliest month
-            for (i=0; i < currentWorkingYear.length; i++) {
-                if (currentWorkingYear[i].date.getMonth() < earliestMonth) {
-                    earliestMonth = currentWorkingYear[i].date.getMonth();
-                };
-            };
-            //Removes all dates with the earliest month
-            for (i=0; i < currentWorkingYear.length; i++) {
-                if (currentWorkingYear[i].date.getMonth() === earliestMonth) {
-                    currentWorkingMonth.push(currentWorkingYear.splice(i, 1)[0]);
-                    i -= 1;
-                };
-            };
-
-            //Day
-            while (currentWorkingMonth.length > 0) {
-                var earliestDay = 31
-                // Finds the earliest day
-                for (i=0; i < currentWorkingMonth.length; i++) {
-                    if (currentWorkingMonth[i].date.getDate() < earliestDay) {
-                        earliestDay = currentWorkingMonth[i].date.getDate();
-                    };
-                };
-                // Removes all dates with the earliest day
-                for (i=0; i < currentWorkingMonth.length; i++) {
-                    if (currentWorkingMonth[i].date.getDate() === earliestDay) {
-                        orderedArray.push(currentWorkingMonth.splice(i, 1)[0]);
-                        i -= 1;
-                    };
-                };
-            };
-        };
-    };
-    console.log(leaveUsed)
-    leaveUsed = orderedArray;
-    console.log(leaveUsed)
+    });
 };
