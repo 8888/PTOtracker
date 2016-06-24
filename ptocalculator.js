@@ -1,8 +1,6 @@
 var hoursInFullDay = 7
 var leaveUsed = []; // array of TimeOff objects
-var totalHours = 0
-var totalDays = 0
-var totalFullDays = 0
+var currentDate = new Date(); // Set today's date
 
 // Object Constructors
 function TimeOff (hours, date) {
@@ -20,9 +18,13 @@ function submitLeave () {
 };
 
 function updateLeave () {
-    var currentDate = new Date(); // Update today's date
+    currentDate = new Date(); // Update today's date
     sortDates();
-    calculateTotals();
+    var totals = calculateTotals(); // [Full days in a year, total days in a year], [full days in 6 weeks, total days in 6 weeks]
+    document.getElementById("FDyear").innerHTML = totals[0][0];
+    document.getElementById("TDyear").innerHTML = totals[0][1];
+    document.getElementById("FD6weeks").innerHTML = totals[1][0];
+    document.getElementById("TD6weeks").innerHTML = totals[1][1];
 };
 
 function addTestData () {
@@ -33,19 +35,7 @@ function addTestData () {
     leaveUsed[4] = new TimeOff(1.5, new Date(2015, 07, 08));
     leaveUsed[5] = new TimeOff(7, new Date(2016, 03, 28));
     leaveUsed[6] = new TimeOff(7, new Date(2015, 11, 05));
-}
-
-function calculateTotals () {
-    totalHours = 0
-    totalDays = 0
-    totalFullDays = 0
-    for (i=0; i < leaveUsed.length; i++) {
-        totalHours += leaveUsed[i].hours;
-        if (leaveUsed[i].hours === 7) {
-            totalFullDays += 1
-        };    
-    };  
-    totalDays = totalHours / hoursInFullDay;
+    leaveUsed[7] = new TimeOff(7, new Date(2016, 05, 27));
 };
 
 function sortDates () {
@@ -59,4 +49,30 @@ function sortDates () {
             return a.date.getDate() - b.date.getDate();
         };
     });
+};
+
+function calculateTotals () {
+    // Calculates the total hours of time off used in a given interval
+    var unitInMS = [
+        31536000000, // year
+        3628800000 // six weeks
+    ]
+    var totals = []; // [Full days in a year, total days in a year], [full days in 6 weeks, total days in 6 weeks]
+
+    for (z=0; z<unitInMS.length; z++) {
+        var totalHours = 0;
+        var totalDays = 0.0;
+        var totalFullDays = 0;
+        for (i=0; i<leaveUsed.length; i++) {
+            if (currentDate.getTime() - leaveUsed[i].date.getTime() <= unitInMS[z]) {
+                totalHours += leaveUsed[i].hours;
+                if (leaveUsed[i].hours === hoursInFullDay) {
+                    totalFullDays += 1;
+                }
+            }
+        totalDays = totalHours / hoursInFullDay;
+        totals[z] = [totalFullDays, totalDays];
+        }
+    }
+    return totals;
 };
