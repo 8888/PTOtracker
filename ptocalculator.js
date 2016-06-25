@@ -20,11 +20,13 @@ function submitLeave () {
 function updateLeave () {
     currentDate = new Date(); // Update today's date
     sortDates();
-    var totals = calculateTotals(); // [total days in a year, full days in a year], [total days in 6 weeks, full days in 6 weeks]
+    var totals = calculateTotals(); // [TD year, FD year], [TD 6 weeks, FD 6 weeks], [TD month, FD month]
     document.getElementById("TDyear").innerHTML = totals[0][0];
     document.getElementById("FDyear").innerHTML = totals[0][1];
     document.getElementById("TD6weeks").innerHTML = totals[1][0];
     document.getElementById("FD6weeks").innerHTML = totals[1][1];
+    document.getElementById("TDmonth").innerHTML = totals[2][0];
+    document.getElementById("FDmonth").innerHTML = totals[2][1];
 };
 
 function addTestData () {
@@ -36,6 +38,7 @@ function addTestData () {
     leaveUsed[5] = new TimeOff(7, new Date(2016, 03, 28));
     leaveUsed[6] = new TimeOff(7, new Date(2015, 11, 05));
     leaveUsed[7] = new TimeOff(7, new Date(2016, 05, 27));
+    leaveUsed[8] = new TimeOff(3.5, new Date(2016, 05, 12));
 };
 
 function sortDates () {
@@ -56,9 +59,12 @@ function calculateTotals () {
     var unitInMS = [
         31536000000, // year
         3628800000 // six weeks
-    ]
-    var totals = [[0,0],[0,0]]; // [total days in a year, full days in a year], [total days in 6 weeks, full days in 6 weeks]
-
+    ];
+    var totals = [
+        [0,0], // [total days in a year, full days in a year]
+        [0,0], // [total days in 6 weeks, full days in 6 weeks]
+        [0,0]  // [total days in current month, full days in current month]
+    ];
     for (i=0; i<leaveUsed.length; i++) {
         for (z=0; z<unitInMS.length; z++) {
             if (currentDate.getTime() - leaveUsed[i].date.getTime() <= unitInMS[z]) {
@@ -68,8 +74,15 @@ function calculateTotals () {
                 }
             }
         }
+        if (currentDate.getYear() === leaveUsed[i].date.getYear() && currentDate.getMonth() === leaveUsed[i].date.getMonth()) {
+            totals[2][0] += leaveUsed[i].hours;
+            if (leaveUsed[i].hours === hoursInFullDay) {
+                totals[2][1] += 1;
+            }
+        }
     }
-    totals[0][0] /= hoursInFullDay;
-    totals[1][0] /= hoursInFullDay;
+    for (i=0; i<totals.length; i++) {
+        totals[i][0] /= hoursInFullDay;
+    }
     return totals;
 };
