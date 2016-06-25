@@ -20,11 +20,11 @@ function submitLeave () {
 function updateLeave () {
     currentDate = new Date(); // Update today's date
     sortDates();
-    var totals = calculateTotals(); // [Full days in a year, total days in a year], [full days in 6 weeks, total days in 6 weeks]
-    document.getElementById("FDyear").innerHTML = totals[0][0];
-    document.getElementById("TDyear").innerHTML = totals[0][1];
-    document.getElementById("FD6weeks").innerHTML = totals[1][0];
-    document.getElementById("TD6weeks").innerHTML = totals[1][1];
+    var totals = calculateTotals(); // [total days in a year, full days in a year], [total days in 6 weeks, full days in 6 weeks]
+    document.getElementById("TDyear").innerHTML = totals[0][0];
+    document.getElementById("FDyear").innerHTML = totals[0][1];
+    document.getElementById("TD6weeks").innerHTML = totals[1][0];
+    document.getElementById("FD6weeks").innerHTML = totals[1][1];
 };
 
 function addTestData () {
@@ -57,22 +57,19 @@ function calculateTotals () {
         31536000000, // year
         3628800000 // six weeks
     ]
-    var totals = []; // [Full days in a year, total days in a year], [full days in 6 weeks, total days in 6 weeks]
+    var totals = [[0,0],[0,0]]; // [total days in a year, full days in a year], [total days in 6 weeks, full days in 6 weeks]
 
-    for (z=0; z<unitInMS.length; z++) {
-        var totalHours = 0;
-        var totalDays = 0.0;
-        var totalFullDays = 0;
-        for (i=0; i<leaveUsed.length; i++) {
+    for (i=0; i<leaveUsed.length; i++) {
+        for (z=0; z<unitInMS.length; z++) {
             if (currentDate.getTime() - leaveUsed[i].date.getTime() <= unitInMS[z]) {
-                totalHours += leaveUsed[i].hours;
+                totals[z][0] += leaveUsed[i].hours;
                 if (leaveUsed[i].hours === hoursInFullDay) {
-                    totalFullDays += 1;
+                    totals[z][1] += 1;
                 }
             }
-        totalDays = totalHours / hoursInFullDay;
-        totals[z] = [totalFullDays, totalDays];
         }
     }
+    totals[0][0] /= hoursInFullDay;
+    totals[1][0] /= hoursInFullDay;
     return totals;
 };
