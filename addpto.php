@@ -6,7 +6,7 @@
         <a href="/ptotracker/index.php">HOME</a><br>
         <?php 
             $year = $_POST['year'];
-            $month = $_POST['month'];
+            $month = $_POST['month']-1;
             $day = $_POST['day'];
             $hours = $_POST['hours'];
 
