@@ -9,17 +9,17 @@ function TimeOff (hours, date) {
 };
 
 // Functions
-function submitLeave () {
-    // Adds a user inputed date
-    var hours = parseFloat(document.getElementById("inputHours").value);
-    var date = new Date(document.getElementById("inputDate").value);
+function submitLeave (year, month, day, hours) {
+    // Creates a JS Date object with SQL DB values
+    var hours = parseInt(hours);
+    var date  = new Date(year, month, day);
     var i = leaveUsed.length;
     leaveUsed[i] = new TimeOff(hours, date);
 };
 
 function updateLeave () {
     currentDate = new Date(); // Update today's date
-    sortDates();
+    //sortDates();
     var totals = calculateTotals(); // [TD year, FD year], [TD 6 weeks, FD 6 weeks], [TD month, FD month]
     document.getElementById("TDyear").innerHTML = totals[0][0];
     document.getElementById("FDyear").innerHTML = totals[0][1];
@@ -30,7 +30,7 @@ function updateLeave () {
 };
 
 function addTestData () {
-    leaveUsed[0] = new TimeOff(7, new Date(2014, 05, 12));
+    leaveUsed[0] = new TimeOff(7, new Date(2014, 05, 12)); // (year, month, day) year and day are as is. month is 0-11 based
     leaveUsed[1] = new TimeOff(7, new Date(2016, 01, 18));
     leaveUsed[2] = new TimeOff(5, new Date(2015, 11, 01));
     leaveUsed[3] = new TimeOff(7, new Date(2014, 02, 20));
