@@ -30,7 +30,7 @@ function updateLeave () {
 };
 
 function addTestData () {
-    leaveUsed[0] = new TimeOff(7, new Date(2014, 05, 12));
+    leaveUsed[0] = new TimeOff(7, new Date(2014, 05, 12)); // (year, month, day) year and day are as is. month is 0-11 based
     leaveUsed[1] = new TimeOff(7, new Date(2016, 01, 18));
     leaveUsed[2] = new TimeOff(5, new Date(2015, 11, 01));
     leaveUsed[3] = new TimeOff(7, new Date(2014, 02, 20));
@@ -86,3 +86,9 @@ function calculateTotals () {
     }
     return totals;
 };
+
+function testCreateObject (year, month, day) {
+    // Creates a JS Date object from SQL DB values
+    var testDate = new Date(year, month, day);
+    return testDate;
+}

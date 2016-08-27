@@ -3,27 +3,24 @@
         <title>PTO Tracker</title>
     </head>
     <body>
+        <a href="/ptotracker/index.php">HOME</a><br>
         <?php 
-            $date = $_POST['inputDate'];
-            $hours = $_POST['inputHours'];
+            $year = $_POST['year'];
+            $month = $_POST['month'];
+            $day = $_POST['day'];
+            $hours = $_POST['hours'];
 
-            echo 'Add successful.<br />';
-            echo 'Date: ' . $date;
-            echo 'Hours: ' . $hours;
+            echo 'Add successful!<br>';
+            echo 'Year: ' . $year;
+            echo ' Month: ' . $month;
+            echo ' Day: ' . $day;
+            echo ' Hours: ' . $hours;
 
-
-            $dbc = mysqli_connect('mysql.betterin30days.com', 'USERNAME', 'PASSWORD', 'pto_tracker') 
+            $dbc = mysqli_connect('mysql.betterin30days.com', 'username', 'password', 'pto_tracker') 
                 or die('Error connecting to mySQL server.');
 
-            $insert_time_used = "INSERT INTO pto_used (date, hours) VALUES ('$date', '$hours')";
+            $insert_time_used = "INSERT INTO pto_used (year, month, day, hours) VALUES ('$year', '$month', '$day', '$hours')";
             $result = mysqli_query($dbc, $insert_time_used); #all that is returned is if it was successfull or not
-
-            $total_time_used = mysqli_query($dbc, "CALL pto_tracker.time_used_get()") or die("Query failed");
-            echo "<table border='1'><tr><td><p>Date</p><td><p>Hours</p></td></tr>";
-            while ($row = mysqli_fetch_array($total_time_used)) {
-                echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>";
-            }
-            echo "</table>";
 
             mysqli_close($dbc);
         ?>
