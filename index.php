@@ -13,13 +13,13 @@ include 'session.php';
 	<body>
 		<form method="post" action="addpto.php">
 			Year: 
-			<input type="number" name="year"><br>
+			<input type="number" min="2000" max="9999" name="year"><br>
 			Month: 
-			<input type="number" name="month"><br>
+			<input type="number" min="1" max="12" name="month"><br>
 			Day: 
-			<input type="number" name="day"><br>
+			<input type="number" min="1" max="31" name="day"><br>
 			Hours: 
-			<input type="number" name="hours" value="7"><br>
+			<input type="number" step="0.01" min="0.01" max="24" name="hours" value="7"><br>
 			<input type="submit" name="submit"><br>
 		</form><br>
 
