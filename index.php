@@ -1,3 +1,7 @@
+<?php
+include 'database.php';
+?>
+<html>
 <!doctype HTML>
 <html>
 	<head>
@@ -40,7 +44,7 @@
         </table>
 
 		<?php
-			$dbc = mysqli_connect('mysql.betterin30days.com', 'username', 'password', 'pto_tracker') 
+			$dbc = mysqli_connect(DATABASE_SERVERNAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_TABLE_PTO) 
                 or die('Error connecting to mySQL server.');
 
             $total_time_used = mysqli_query($dbc, "CALL pto_tracker.time_used_get()")

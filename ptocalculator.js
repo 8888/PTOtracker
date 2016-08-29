@@ -12,7 +12,7 @@ function TimeOff (hours, date) {
 function submitLeave (year, month, day, hours) {
     // Creates a JS Date object with SQL DB values
     var hours = parseInt(hours);
-    var date  = new Date(year, month, day);
+    var date  = new Date(year, month-1, day); // JS Date objects use 0-11 for months, but years and days are as is
     var i = leaveUsed.length;
     leaveUsed[i] = new TimeOff(hours, date);
 };
