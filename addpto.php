@@ -1,5 +1,6 @@
 <?php
 include 'database.php';
+include 'session.php';
 ?>
 <html>
     <head>
@@ -13,19 +14,20 @@ include 'database.php';
             $day = $_POST['day'];
             $hours = $_POST['hours'];
 
-            echo 'Add successful!<br>';
-            echo 'Year: ' . $year;
-            echo ' Month: ' . $month;
-            echo ' Day: ' . $day;
-            echo ' Hours: ' . $hours;
-
-            $dbc = mysqli_connect(DATABASE_SERVERNAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_TABLE_PTO) 
-                or die('Error connecting to mySQL server.');
-
             $insert_time_used = "INSERT INTO pto_used (year, month, day, hours) VALUES ('$year', '$month', '$day', '$hours')";
-            $result = mysqli_query($dbc, $insert_time_used); #all that is returned is if it was successfull or not
+            $result = mysqli_query($db, $insert_time_used); #all that is returned is if it was successfull or not
 
-            mysqli_close($dbc);
+            if ($result) {
+                echo 'Add successful!<br>';
+                echo 'Year: ' . $year;
+                echo ' Month: ' . $month;
+                echo ' Day: ' . $day;
+                echo ' Hours: ' . $hours;
+            } else {
+                echo "Error! Add failed!";
+            };
+
+            mysqli_close($db);
         ?>
     </body>
 </html>

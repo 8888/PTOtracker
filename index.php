@@ -1,5 +1,6 @@
 <?php
 include 'database.php';
+include 'session.php';
 ?>
 <html>
 <!doctype HTML>
@@ -44,10 +45,7 @@ include 'database.php';
         </table>
 
 		<?php
-			$dbc = mysqli_connect(DATABASE_SERVERNAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_TABLE_PTO) 
-                or die('Error connecting to mySQL server.');
-
-            $total_time_used = mysqli_query($dbc, "CALL pto_tracker.time_used_get()")
+            $total_time_used = mysqli_query($db, "CALL pto_tracker.time_used_get()")
             	or die("Query failed");
 
             echo "<table border='1'>";
@@ -79,7 +77,7 @@ include 'database.php';
             };
             echo "</table><br>";
 
-            mysqli_close($dbc);
+            mysqli_close($db);
 		?>
 	</body>
 </html>
