@@ -9,6 +9,11 @@ include 'session.php';
     <body>
         <a href="/ptotracker/index.php">HOME</a><br>
         <?php 
+            // TODO: check that the entered values are in the correct format
+            // year: four digit int
+            // month: int > 0 and <= 12
+            // day: int > 0 and <= 31
+            // hours: float > 0
             $year = $_POST['year'];
             $month = $_POST['month'];
             $day = $_POST['day'];
