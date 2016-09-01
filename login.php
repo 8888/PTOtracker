@@ -10,7 +10,6 @@
         $sql_auth = "SELECT username FROM login WHERE username = '$myusername' and password = '$mypassword'";
         $result = mysqli_query($db,$sql_auth);
         $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-        $active = $row['active'];
 
         $count = mysqli_num_rows($result);
         if ($count == 1) {
