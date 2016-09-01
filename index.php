@@ -60,16 +60,16 @@ include 'session.php';
             echo "</tr>";
             while ($row = mysqli_fetch_array($total_time_used)) {
                 echo "<tr>";
-                echo "<td>".$row[0]."</td>";
-                echo "<td>".$row[1]."</td>";
-                echo "<td>".$row[2]."</td>";
-                echo "<td>".$row[3]."</td>";
+                echo "<td>".$row['year']."</td>";
+                echo "<td>".$row['month']."</td>";
+                echo "<td>".$row['day']."</td>";
+                echo "<td>".$row['hours']."</td>";
                 echo "</tr>";
 
-                $year = $row[0];
-                $month = $row[1];
-                $day = $row[2];
-                $hours = $row[3];
+                $year = $row['year'];
+                $month = $row['month'];
+                $day = $row['day'];
+                $hours = $row['hours'];
                 echo "<script type='text/javascript'>";
                 echo "submitLeave('$year', '$month', '$day', '$hours');";
                 echo "updateLeave();";
