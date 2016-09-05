@@ -2,7 +2,6 @@
 include 'database.php';
 include 'session.php';
 ?>
-<html>
 <!doctype HTML>
 <html>
 	<head>
@@ -43,7 +42,6 @@ include 'session.php';
                 <td><p id="TDmonth"></p></td>
             </tr>
         </table>
-
 		<?php
             $total_time_used = mysqli_query($db, "CALL pto_tracker.time_used_get()")
             	or die("Query failed");
@@ -60,16 +58,16 @@ include 'session.php';
             echo "</tr>";
             while ($row = mysqli_fetch_array($total_time_used)) {
                 echo "<tr>";
-                echo "<td>".$row[0]."</td>";
-                echo "<td>".$row[1]."</td>";
-                echo "<td>".$row[2]."</td>";
-                echo "<td>".$row[3]."</td>";
+                echo "<td>".$row['year']."</td>";
+                echo "<td>".$row['month']."</td>";
+                echo "<td>".$row['day']."</td>";
+                echo "<td>".$row['hours']."</td>";
                 echo "</tr>";
 
-                $year = $row[0];
-                $month = $row[1];
-                $day = $row[2];
-                $hours = $row[3];
+                $year = $row['year'];
+                $month = $row['month'];
+                $day = $row['day'];
+                $hours = $row['hours'];
                 echo "<script type='text/javascript'>";
                 echo "submitLeave('$year', '$month', '$day', '$hours');";
                 echo "updateLeave();";
@@ -79,5 +77,6 @@ include 'session.php';
 
             mysqli_close($db);
 		?>
+        <br><a href="/ptotracker/adduser.php">Add a new user</a>
 	</body>
 </html>
