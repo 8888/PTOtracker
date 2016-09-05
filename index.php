@@ -2,7 +2,6 @@
 include 'database.php';
 include 'session.php';
 ?>
-<html>
 <!doctype HTML>
 <html>
 	<head>
@@ -43,7 +42,6 @@ include 'session.php';
                 <td><p id="TDmonth"></p></td>
             </tr>
         </table>
-
 		<?php
             $total_time_used = mysqli_query($db, "CALL pto_tracker.time_used_get()")
             	or die("Query failed");
@@ -79,5 +77,6 @@ include 'session.php';
 
             mysqli_close($db);
 		?>
+        <br><a href="/ptotracker/adduser.php">Add a new user</a>
 	</body>
 </html>
