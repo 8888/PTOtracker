@@ -12,31 +12,35 @@ include 'session.php';
 	<body>
 		<form method="post" action="addpto.php">
 			Year: 
-			<input type="number" min="2000" max="9999" name="year"><br>
+			<input type="number" min="2000" max="9999" name="year" id="year_input"><br>
 			Month: 
-			<input type="number" min="1" max="12" name="month"><br>
+			<input type="number" min="1" max="12" name="month" id="month_input"><br>
 			Day: 
-			<input type="number" min="1" max="31" name="day"><br>
+			<input type="number" min="1" max="31" name="day" id="day_input"><br>
 			Hours: 
 			<input type="number" step="0.01" min="0.01" max="24" name="hours" value="7"><br>
+            <button type="button" onclick="set_as_today()">Today</button>
 			<input type="submit" name="submit"><br>
 		</form><br>
 
         <table id="tableDisplay" border="1">
             <tr>
                 <td></td>
-                <td><p>Year</p></td>
+                <td><p>12 Months</p></td>
+                <td><p>Current Year</p></td>
                 <td><p>6 weeks</p></td>
                 <td><p>Current Month</p></td>
             </tr>
             <tr>
                 <td><p>Full days</p></td>
+                <td><p id="FD12months"></p></td>
                 <td><p id="FDyear"></p></td>
                 <td><p id="FD6weeks"></p></td>
                 <td><p id="FDmonth"></p></td>
             </tr>
             <tr>
                 <td><p>Total days</p></td>
+                <td><p id="TD12months"></p></td>
                 <td><p id="TDyear"></p></td>
                 <td><p id="TD6weeks"></p></td>
                 <td><p id="TDmonth"></p></td>
